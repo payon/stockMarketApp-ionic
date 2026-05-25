@@ -1,0 +1,105 @@
+<!--
+  점주 대시보드: 설정 페이지
+  매장명, 점주 연락처 등 설정 관리
+-->
+<ion-view view-title="설정">
+  <ion-content class="padding">
+    
+    <!-- 기본 정보 -->
+    <div class="card">
+      <div class="item item-divider">
+        🏪 매장 정보
+      </div>
+      <div class="item item-text-wrap">
+        <label class="item item-input">
+          <span class="input-label">매장명</span>
+          <input type="text" ng-model="settings.storeName" placeholder="무인편의점 강남점">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">매장코드</span>
+          <input type="text" ng-model="settings.storeCode" placeholder="GN-001">
+        </label>
+      </div>
+    </div>
+    
+    <!-- 점주 정보 -->
+    <div class="card">
+      <div class="item item-divider">
+        👤 점주 정보
+      </div>
+      <div class="item item-text-wrap">
+        <label class="item item-input">
+          <span class="input-label">이름</span>
+          <input type="text" ng-model="settings.managerName" placeholder="홍길동">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">전화번호</span>
+          <input type="tel" ng-model="settings.managerPhone" placeholder="010-1234-5678">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">이메일</span>
+          <input type="email" ng-model="settings.managerEmail" placeholder="manager@example.com">
+        </label>
+      </div>
+    </div>
+    
+    <!-- 알림 설정 -->
+    <div class="card">
+      <div class="item item-divider">
+        🔔 알림 설정
+      </div>
+      <div class="item item-text-wrap">
+        <ion-toggle ng-model="settings.notificationEnabled">
+          재고 알림 받기
+        </ion-toggle>
+        <ion-toggle ng-model="settings.autoPaymentEnabled">
+          자동 결제 활성화
+        </ion-toggle>
+      </div>
+    </div>
+    
+    <!-- 영수증/알림 미리보기 -->
+    <div class="card">
+      <div class="item item-divider">
+        📄 영수증/알림 미리보기
+      </div>
+      <div class="item item-text-wrap">
+        <p style="font-size: 12px; color: #666;">
+          저장된 설정이 영수증과 알림에 즉시 반영됩니다.
+        </p>
+        <div style="padding: 15px; background: #f8f8f8; border-radius: 8px; margin-top: 10px;">
+          <h4 style="margin: 0 0 10px 0;">{{settings.storeName || '매장명'}}</h4>
+          <p style="margin: 5px 0; font-size: 13px;">
+            매장코드: {{settings.storeCode || 'XXXX'}}<br>
+            점주: {{settings.managerName || '이름'}}<br>
+            연락처: {{settings.managerPhone || '전화번호'}}
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 저장 버튼 -->
+    <button class="button button-block button-positive" ng-click="saveSettings()">
+      💾 설정 저장
+    </button>
+    
+    <!-- 테스트 알림 -->
+    <button class="button button-block button-calm" ng-click="sendTestNotification()">
+      📬 테스트 알림 발송
+    </button>
+    
+    <!-- 시스템 정보 -->
+    <div class="card">
+      <div class="item item-divider">
+        ℹ️ 시스템 정보
+      </div>
+      <div class="item item-text-wrap">
+        <p><strong>버전:</strong> v1.0.0</p>
+        <p><strong>AI 모델:</strong> burn.dev 3D Pose Estimation</p>
+        <p><strong>객체 감지:</strong> burn.dev Object Detection</p>
+        <p><strong>프라이버시:</strong> 얼굴 인식 없는 골격 추적</p>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

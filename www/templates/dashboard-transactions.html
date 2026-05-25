@@ -1,0 +1,111 @@
+<!--
+  점주 대시보드: 거래 내역 페이지
+-->
+<ion-view view-title="거래 내역">
+  <ion-content class="padding">
+    
+    <!-- 기간 선택 -->
+    <div class="card">
+      <div class="item item-divider">
+        📅 조회 기간
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col">
+            <label>시작일</label>
+            <input type="date" class="text-input" ng-model="dateRange.start">
+          </div>
+          <div class="col">
+            <label>종료일</label>
+            <input type="date" class="text-input" ng-model="dateRange.end">
+          </div>
+        </div>
+        <button class="button button-block button-calm" ng-click="loadTransactions()">
+          🔍 조회
+        </button>
+      </div>
+    </div>
+    
+    <!-- 거래 목록 -->
+    <div class="list card" ng-repeat="txn in transactions">
+      <div class="item item-icon-left">
+        <i class="icon ion-card"></i>
+        <h2>{{txn.id}}</h2>
+        <p>세션: {{txn.sessionId}}</p>
+        <p>일시: {{txn.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+        <p>
+          <span class="badge badge-balanced">{{txn.totalAmount | currency:'₩'}}</span>
+          <span class="badge" 
+                ng-class="{
+                  'badge-positive': txn.status === 'completed',
+                  'badge-assertive': txn.status === 'refunded'
+                }"
+                style="margin-left: 5px;">
+            {{txn.status === 'completed' ? '완료' : '환불'}}
+          </span>
+        </p>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <h4>구매 항목</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li ng-repeat="item in txn.items" style="border-bottom: 1px solid #eee; padding: 5px 0;">
+            {{item.name}} x {{item.quantity}} - {{item.price * item.quantity | currency:'₩'}}
+          </li>
+        </ul>
+        
+        <div class="row" style="margin-top: 10px;">
+          <div class="col col-50">
+            <small>결제수단: 
+              <span ng-if="txn.paymentMethod === 'auto_payment'">자동결제</span>
+              <span ng-if="txn.paymentMethod === 'credit_card'">신용카드</span>
+              <span ng-if="txn.paymentMethod === 'mobile_pay'">모바일페이</span>
+            </small>
+          </div>
+          <div class="col col-50 text-right">
+            <button class="button button-small button-light" ng-click="viewTransactionDetail(txn.id)">
+              상세보기
+            </button>
+            <button class="button button-small button-assertive" 
+                    ng-if="txn.status === 'completed'"
+                    ng-click="processRefund(txn.id)">
+              환불처리
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 빈 결과 -->
+    <div class="card" ng-if="transactions.length === 0">
+      <div class="item item-text-wrap text-center">
+        <h3>📭 거래 내역이 없습니다</h3>
+        <p>기간을 변경하여 조회해보세요</p>
+      </div>
+    </div>
+    
+    <!-- 요약 정보 -->
+    <div class="card" ng-if="transactions.length > 0">
+      <div class="item item-divider">
+        📊 거래 요약
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-33">
+            <h3>{{transactions.length}}건</h3>
+            <p>총 거래</p>
+          </div>
+          <div class="col col-33">
+            <h3>{{transactions.filter(t => t.status === 'completed').length}}건</h3>
+            <p>정상거래</p>
+          </div>
+          <div class="col col-33">
+            <h3>{{transactions.filter(t => t.status === 'refunded').length}}건</h3>
+            <p>환불거래</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

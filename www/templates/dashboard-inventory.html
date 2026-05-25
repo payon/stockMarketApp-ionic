@@ -1,0 +1,135 @@
+<!--
+  점주 대시보드: 재고 관리 페이지
+  RGB 재고 상태 표시 및 알림
+-->
+<ion-view view-title="재고 관리">
+  <ion-content class="padding">
+    
+    <!-- 재고 상태 필터 -->
+    <div class="card">
+      <div class="item item-divider">
+        📊 재고 상태 필터
+      </div>
+      <div class="item item-text-wrap">
+        <label class="radio" ng-repeat="filter in ['all', 'sufficient', 'needs_restock', 'out_of_stock', 'near_expiry']">
+          <input type="radio" name="statusFilter" ng-value="filter" ng-model="statusFilter">
+          {{filter === 'all' ? '전체' : 
+            filter === 'sufficient' ? '충분' :
+            filter === 'needs_restock' ? '보충필요' :
+            filter === 'out_of_stock' ? '품절' : '유통기한임박'}}
+        </label>
+      </div>
+    </div>
+    
+    <!-- 재고 알림 -->
+    <div class="card" ng-if="alerts.length > 0">
+      <div class="item item-divider">
+        🔔 재고 알림 ({{alerts.length}}건)
+      </div>
+      <div class="item item-text-wrap" ng-repeat="alert in alerts" 
+           ng-class="{
+             'item-critical': alert.type === 'critical',
+             'item-warning': alert.type === 'warning',
+             'item-info': alert.type === 'info'
+           }"
+           style="border-left: 4px solid;"
+           ng-style="{
+             'border-left-color': alert.type === 'critical' ? '#ff3c3c' : 
+                                  alert.type === 'warning' ? '#ffc832' : '#387ef5'
+           }">
+        <div class="row">
+          <div class="col col-80">
+            <i class="icon" 
+               ng-class="{
+                 'ion-alert-circled': alert.type === 'critical',
+                 'ion-alert': alert.type === 'warning',
+                 'ion-information-circled': alert.type === 'info'
+               }"></i>
+            {{alert.message}}
+          </div>
+          <div class="col col-20 text-right">
+            <button class="button button-small button-positive" 
+                    ng-click="markAlertRead($index)"
+                    ng-if="!alert.readAt">
+              확인
+            </button>
+            <span ng-if="alert.readAt" style="font-size: 11px; color: #999;">
+              {{alert.readAt | date:'HH:mm'}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 재고 목록 -->
+    <div class="list card" ng-repeat="item in filteredInventory()">
+      <div class="item item-icon-left"
+           style="border-left: 5px solid;"
+           ng-style="{ 'border-left-color': 
+             item.status === 'sufficient' ? 'rgb(0,220,100)' :
+             item.status === 'needs_restock' ? 'rgb(255,200,50)' :
+             item.status === 'out_of_stock' ? 'rgb(255,60,60)' : 'rgb(160,80,255)'
+           }">
+        <i class="icon ion-cube"></i>
+        <h2>{{item.productName}}</h2>
+        <p>위치: {{item.shelfPosition}}</p>
+        <p>재고: {{item.quantity}}개</p>
+        <p>
+          <span class="badge" 
+                ng-class="{
+                  'badge-positive': item.status === 'sufficient',
+                  'badge-warning': item.status === 'needs_restock',
+                  'badge-assertive': item.status === 'out_of_stock',
+                  'badge-calm': item.status === 'near_expiry'
+                }">
+            {{item.status === 'sufficient' ? '충분' : 
+              item.status === 'needs_restock' ? '보충필요' :
+              item.status === 'out_of_stock' ? '품절' : '유통기한임박'}}
+          </span>
+        </p>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50">
+            <small>최종입고: {{item.lastRestocked}}</small>
+          </div>
+          <div class="col col-50 text-right">
+            <button class="button button-small button-balanced" 
+                    ng-click="restockProduct(item.productId)">
+              📦 재고보충
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- RGB 재고 상태 범례 -->
+    <div class="card">
+      <div class="item item-divider">
+        🎨 RGB 재고 상태 색상
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: rgb(0,220,100); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">충분<br>(0,220,100)</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: rgb(255,200,50); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">보충필요<br>(255,200,50)</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: rgb(255,60,60); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">품절<br>(255,60,60)</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: rgb(160,80,255); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">유통기한임박<br>(160,80,255)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

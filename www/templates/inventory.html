@@ -1,0 +1,129 @@
+<!--
+  고객 앱: 매장 재고 조회 페이지
+  RGB 재고 상태 색상 표시
+-->
+<ion-view view-title="재고 조회">
+  <ion-content class="padding">
+    
+    <!-- 매장 선택 -->
+    <div class="card">
+      <div class="item item-divider">
+        🏪 매장 선택
+      </div>
+      <div class="item item-text-wrap">
+        <select class="full-width" ng-model="selectedStore" ng-options="store as store.name for store in stores" ng-change="loadProducts()">
+          <option value="">매장을 선택하세요</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- 검색 -->
+    <div class="card">
+      <div class="item item-input-wrapper">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="상품명, 카테고리, 바코드 검색" ng-model="searchQuery">
+      </div>
+    </div>
+    
+    <!-- 재고 상태 범례 -->
+    <div class="card">
+      <div class="item item-divider">
+        📊 재고 상태
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-25">
+            <div style="width: 30px; height: 30px; background: rgb(0,220,100); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">충분</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 30px; height: 30px; background: rgb(255,200,50); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">보충필요</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 30px; height: 30px; background: rgb(255,60,60); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">품절</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 30px; height: 30px; background: rgb(160,80,255); margin: 0 auto 5px; border-radius: 4px;"></div>
+            <span style="font-size: 11px;">유통기한임박</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 상품 목록 -->
+    <div class="list card" ng-repeat="product in filteredProducts()">
+      <div class="item item-icon-left" 
+           style="border-left: 5px solid;" 
+           ng-style="{ 'border-left-color': getStockColor(product.status) }">
+        <i class="icon ion-cube"></i>
+        <h2>{{product.name}}</h2>
+        <p>카테고리: {{product.category}}</p>
+        <p>가격: {{product.price | currency:'₩'}}</p>
+        <p>바코드: {{product.barcode}}</p>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50">
+            <strong>재고:</strong> {{product.quantity}}개
+          </div>
+          <div class="col col-50 text-right">
+            <strong>위치:</strong> {{product.shelfPosition}}
+          </div>
+        </div>
+        
+        <div class="row" style="margin-top: 10px;">
+          <div class="col col-50">
+            <span class="badge" 
+                  ng-class="{
+                    'badge-positive': product.status === 'sufficient',
+                    'badge-warning': product.status === 'needs_restock',
+                    'badge-assertive': product.status === 'out_of_stock',
+                    'badge-calm': product.status === 'near_expiry'
+                  }">
+              {{product.status === 'sufficient' ? '충분' : 
+                product.status === 'needs_restock' ? '보충필요' :
+                product.status === 'out_of_stock' ? '품절' : '유통기한임박'}}
+            </span>
+          </div>
+          <div class="col col-50 text-right" style="font-size: 12px; color: #666;">
+            {{product.lastRestocked | date:'yyyy-MM-dd'}} 입고
+          </div>
+        </div>
+        
+        <div ng-if="product.expiryDate" class="row" style="margin-top: 5px;">
+          <div class="col text-right" style="font-size: 12px; color: #e74c3c;">
+            ⚠️ 유통기한: {{product.expiryDate | date:'yyyy-MM-dd'}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 빈 결과 -->
+    <div class="card" ng-if="filteredProducts().length === 0">
+      <div class="item item-text-wrap text-center">
+        <h3>🔍 검색 결과가 없습니다</h3>
+        <p>다른 검색어를 시도해보세요</p>
+      </div>
+    </div>
+    
+    <!-- 한국 편의점 특화 상품 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🇰🇷 한국 편의점 특화 상품
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-ios-cart">삼각김밥 (참치마요, 김치볶음밥 등)</li>
+          <li class="item icon ion-ios-cart">도시락 (불고기, 돈까스, 비빔밥)</li>
+          <li class="item icon ion-ios-cart">택배 서비스 (배송/반품)</li>
+          <li class="item icon ion-ios-cart">공공요금 납부</li>
+          <li class="item icon ion-ios-cart">복권 (로또 6/45)</li>
+        </ul>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

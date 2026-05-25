@@ -14,21 +14,57 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <h1 class="title">{{getTitle()}}</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
+        <!-- 고객 앱 메뉴 -->
+        <ion-item menu-close href="#/app/qr-entry">
+          📱 입장 QR
+        </ion-item>
+        <ion-item menu-close href="#/app/cart">
+          🛒 장바구니
+        </ion-item>
+        <ion-item menu-close href="#/app/receipt">
+          🧾 영수증/포인트
+        </ion-item>
+        <ion-item menu-close href="#/app/inventory">
+          📦 재고 조회
+        </ion-item>
+        
+        <div class="padding-top padding-bottom" style="border-top: 1px solid #ccc; margin: 10px 0;"></div>
+        
+        <!-- 점주 대시보드 메뉴 -->
+        <ion-item menu-close href="#/app/dashboard/realtime">
+          📊 실시간 현황
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/inventory">
+          📦 재고 관리
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/transactions">
+          💰 거래 내역
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/stats">
+          📈 통계 분석
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/facilities">
+          🔧 설비 관리
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/customers">
+          👥 고객 관리
+        </ion-item>
+        <ion-item menu-close href="#/app/dashboard/settings">
+          ⚙️ 설정
+        </ion-item>
+        
+        <div class="padding-top padding-bottom" style="border-top: 1px solid #ccc; margin: 10px 0;"></div>
+        
+        <!-- 공통 메뉴 -->
+        <ion-item menu-close href="#/app/language">
+          🌐 언어/Language
+        </ion-item>
         <ion-item menu-close ng-click="login()">
-          Login
-        </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
-        </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
-        </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
+          🔑 로그인
         </ion-item>
       </ion-list>
     </ion-content>

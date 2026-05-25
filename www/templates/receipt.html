@@ -1,0 +1,118 @@
+<!--
+  고객 앱: 영수증 확인 및 포인트 적립 페이지
+-->
+<ion-view view-title="영수증/포인트">
+  <ion-content class="padding">
+    
+    <!-- 영수증 -->
+    <div class="card" ng-if="receipt">
+      <div class="item item-divider">
+        🧾 영수증
+      </div>
+      
+      <div class="item item-text-wrap">
+        <h3>{{receipt.storeName}}</h3>
+        <p>매장코드: {{receipt.storeCode}}</p>
+        <p>거래일시: {{receipt.date | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+        <p>거래번호: {{receipt.id}}</p>
+      </div>
+      
+      <div class="item item-divider">
+        구매 내역
+      </div>
+      
+      <div class="item item-text-wrap" ng-repeat="item in receipt.items">
+        <div class="row">
+          <div class="col col-60">
+            {{item.name}} x {{item.quantity}}
+          </div>
+          <div class="col text-right">
+            {{item.subtotal | currency:'₩'}}
+          </div>
+        </div>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-60"><strong>소계</strong></div>
+          <div class="col text-right">{{receipt.subtotal | currency:'₩'}}</div>
+        </div>
+        <div class="row">
+          <div class="col col-60"><strong>부가세 (10%)</strong></div>
+          <div class="col text-right">{{receipt.tax | currency:'₩'}}</div>
+        </div>
+        <div class="row" style="border-top: 2px solid #333; padding-top: 10px;">
+          <div class="col col-60"><strong>총 금액</strong></div>
+          <div class="col text-right" style="font-size: 18px; color: #387ef5;">{{receipt.total | currency:'₩'}}</div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col col-60">결제수단</div>
+          <div class="col text-right">
+            <span ng-if="receipt.paymentMethod === 'auto_payment'">자동결제</span>
+            <span ng-if="receipt.paymentMethod === 'credit_card'">신용카드</span>
+            <span ng-if="receipt.paymentMethod === 'mobile_pay'">모바일페이</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-60">상태</div>
+          <div class="col text-right">
+            <span class="badge badge-positive" ng-if="receipt.status === 'completed'">완료</span>
+            <span class="badge badge-warning" ng-if="receipt.status === 'refunded'">환불</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <button class="button button-block button-calm" ng-click="shareReceipt('email')">
+          📧 이메일로 영수증 받기
+        </button>
+        <button class="button button-block button-light" ng-click="shareReceipt('sms')">
+          📱 SMS 로 영수증 받기
+        </button>
+      </div>
+    </div>
+    
+    <!-- 포인트 정보 -->
+    <div class="card">
+      <div class="item item-divider">
+        ⭐ 포인트 정보
+      </div>
+      
+      <div class="item item-text-wrap text-center" style="padding: 20px;">
+        <div style="font-size: 48px; color: #f39c12;">
+          {{points.total | number}}P
+        </div>
+        <p>누적 포인트</p>
+        
+        <div style="margin-top: 20px;">
+          <span class="badge" 
+                ng-class="{
+                  'badge-assertive': points.tier === 'Bronze',
+                  'badge-positive': points.tier === 'Silver',
+                  'badge-balanced': points.tier === 'Gold',
+                  'badge-dark': points.tier === 'Platinum'
+                }"
+                style="font-size: 16px; padding: 10px 20px;">
+            {{points.tier}} Member
+          </span>
+        </div>
+        
+        <div style="margin-top: 15px; padding: 15px; background: #f8f8f8; border-radius: 8px;">
+          <p><strong>이번 거래 적립:</strong> +{{points.earned | number}}P</p>
+          <p style="font-size: 12px; color: #666;">구매금액의 1% 적립</p>
+        </div>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <h4>티어 안내</h4>
+        <ul class="item-icon-left" style="font-size: 13px;">
+          <li class="item icon ion-ios-circle-outline">Bronze: 0~999P</li>
+          <li class="item icon ion-ios-circle-filled">Silver: 1,000~4,999P</li>
+          <li class="item icon ion-ios-star">Gold: 5,000~9,999P</li>
+          <li class="item icon ion-ios-star-half">Platinum: 10,000P 이상</li>
+        </ul>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

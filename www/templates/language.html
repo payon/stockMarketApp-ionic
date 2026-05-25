@@ -1,0 +1,114 @@
+<!--
+  다국어 설정 페이지
+  한국어/영어/중국어/일본어 지원
+-->
+<ion-view view-title="언어/Language">
+  <ion-content class="padding">
+    
+    <div class="card">
+      <div class="item item-divider">
+        🌐 언어 선택 / Select Language
+      </div>
+      <div class="item item-text-wrap">
+        <p style="font-size: 12px; color: #666;">
+          앱 표시 언어를 선택하세요.<br>
+          Select your preferred language.
+        </p>
+      </div>
+      
+      <!-- 언어 목록 -->
+      <div class="item item-radio" ng-repeat="lang in languages">
+        <input type="radio" 
+               name="language" 
+               ng-value="lang.code" 
+               ng-model="currentLanguage"
+               ng-change="changeLanguage(lang.code)">
+        <i class="radio-icon"></i>
+        <div class="item-content">
+          <h2>{{lang.flag}} {{lang.name}}</h2>
+          <p ng-if="lang.code === 'ko'">한국어</p>
+          <p ng-if="lang.code === 'en'">English</p>
+          <p ng-if="lang.code === 'zh'">中文 (Chinese)</p>
+          <p ng-if="lang.code === 'ja'">日本語 (Japanese)</p>
+        </div>
+        <div class="item-note" ng-if="currentLanguage === lang.code">
+          ✓ 선택됨
+        </div>
+      </div>
+    </div>
+    
+    <!-- 언어별 안내 문구 -->
+    <div class="card">
+      <div class="item item-divider">
+        📝 언어별 안내 / Language Guide
+      </div>
+      <div class="item item-text-wrap">
+        
+        <div ng-if="currentLanguage === 'ko'">
+          <h3>🇰🇷 한국어</h3>
+          <p>한국어는 한국의 공식 언어입니다.</p>
+          <ul class="item-icon-left">
+            <li class="item icon ion-checkmark">모든 기능이 완벽하게 지원됩니다</li>
+            <li class="item icon ion-checkmark">한국 편의점 특화 용어 사용</li>
+            <li class="item icon ion-checkmark">삼각김밥, 도시락 등 한국 상품 설명</li>
+          </ul>
+        </div>
+        
+        <div ng-if="currentLanguage === 'en'">
+          <h3>🇺🇸 English</h3>
+          <p>English is the international language.</p>
+          <ul class="item-icon-left">
+            <li class="item icon ion-checkmark">All features are fully supported</li>
+            <li class="item icon ion-checkmark">Korean convenience store terms explained</li>
+            <li class="item icon ion-checkmark">Product descriptions in English</li>
+          </ul>
+        </div>
+        
+        <div ng-if="currentLanguage === 'zh'">
+          <h3>🇨🇳 中文</h3>
+          <p>中文是中国的官方语言。</p>
+          <ul class="item-icon-left">
+            <li class="item icon ion-checkmark">所有功能完全支持</li>
+            <li class="item icon ion-checkmark">韩国便利店术语说明</li>
+            <li class="item icon ion-checkmark">商品说明使用中文</li>
+          </ul>
+        </div>
+        
+        <div ng-if="currentLanguage === 'ja'">
+          <h3>🇯🇵 日本語</h3>
+          <p>日本語は日本の公式言語です。</p>
+          <ul class="item-icon-left">
+            <li class="item icon ion-checkmark">すべての機能が完全にサポートされています</li>
+            <li class="item icon ion-checkmark">韓国コンビニ用語の説明付き</li>
+            <li class="item icon ion-checkmark">商品説明は日本語で表示</li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    
+    <!-- burn.dev AI 다국어 지원 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🤖 AI 다국어 지원
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-ios-world">
+            burn.dev AI 모델의 다국어 상품 인식
+          </li>
+          <li class="item icon ion-chatbubble">
+            고객 앱 UI 4 개 국어 지원
+          </li>
+          <li class="item icon ion-document-text">
+            영수증 및 알림 다국어 출력
+          </li>
+          <li class="item icon ion-android-settings">
+            언어 설정 자동 저장
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

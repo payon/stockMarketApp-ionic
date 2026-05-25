@@ -1,0 +1,77 @@
+<!--
+  고객 앱: 입장 QR 생성 및 생체인증 페이지
+  burn.dev API 연동하여 고유 세션 ID 생성
+  프라이버시 보호를 위한 익명化处理
+-->
+<ion-view view-title="입장 QR">
+  <ion-content class="padding">
+    
+    <div class="card">
+      <div class="item item-text-wrap text-center">
+        <h2>📱 입장 QR 코드</h2>
+        <p>아래 QR 코드를 매장 입구 스캐너에 제시하세요</p>
+      </div>
+      
+      <div class="item text-center" style="padding: 30px;">
+        <!-- QR 코드 표시 영역 -->
+        <div ng-if="qrCode" style="display: inline-block; padding: 20px; background: white; border-radius: 10px;">
+          <img ng-src="{{qrCode}}" alt="Entry QR Code" style="width: 250px; height: 250px;">
+        </div>
+        <div ng-if="!qrCode" class="spinner spinner-balanced"></div>
+      </div>
+      
+      <div class="item item-text-wrap text-center">
+        <p ng-if="sessionId"><strong>세션 ID:</strong> {{sessionId}}</p>
+        <p ng-if="anonymousUser.entryTime"><strong>입장 시간:</strong> {{anonymousUser.entryTime | date:'HH:mm:ss'}}</p>
+        <p ng-if="anonymousUser.id"><strong>익명 ID:</strong> {{anonymousUser.id}}</p>
+        
+        <!-- 상태 표시 -->
+        <div class="badge badge-assertive" ng-if="entryStatus === 'ready'">준비중</div>
+        <div class="badge badge-positive" ng-if="entryStatus === 'entered'">입장 완료</div>
+        <div class="badge badge-warning" ng-if="entryStatus === 'scanning'">스캔중...</div>
+        <div class="badge badge-dark" ng-if="entryStatus === 'denied'">접근 거부</div>
+      </div>
+    </div>
+    
+    <!-- 생체인증 (선택사항) -->
+    <div class="card" ng-if="entryStatus === 'entered'">
+      <div class="item item-divider">
+        🔐 생체인증 (선택사항)
+      </div>
+      <div class="item item-text-wrap">
+        <p>안면인식 대신 제스처 인증 등 대체 수단을 사용할 수 있습니다</p>
+        <button class="button button-block button-balanced" ng-click="verifyBiometric()" ng-disabled="anonymousUser.biometricVerified">
+          {{anonymousUser.biometricVerified ? '인증 완료 ✓' : '생체인증 시작'}}
+        </button>
+      </div>
+    </div>
+    
+    <!-- 프라이버시 보호 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🔒 프라이버시 보호
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-lock-combination">
+            얼굴 인식 없는 골격 추적 사용
+          </li>
+          <li class="item icon ion-android-remove-circle">
+            얼굴 영역 자동 제외 (키포인트 0 번 제거)
+          </li>
+          <li class="item icon ion-key">
+            세션 내 익명 ID 할당 (재방문 간 연결 불가)
+          </li>
+          <li class="item icon ion-ios-circle-outline">
+            생체 특징 비저장
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <button class="button button-block button-calm" ng-click="generateEntryQR()">
+      🔄 QR 코드 재생성
+    </button>
+    
+  </ion-content>
+</ion-view>

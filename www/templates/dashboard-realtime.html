@@ -1,0 +1,106 @@
+<!--
+  점주 대시보드: 실시간 현황 페이지
+  매장 평면도 실시간 + 인원 현황
+-->
+<ion-view view-title="실시간 현황">
+  <ion-content class="padding">
+    
+    <!-- 매장 정보 -->
+    <div class="card">
+      <div class="item item-divider">
+        🏪 {{storeInfo.name}} ({{storeInfo.code}})
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-50">
+            <h2 style="color: #387ef5;">{{realtimeStats.currentCustomers}}명</h2>
+            <p>현재 고객</p>
+          </div>
+          <div class="col col-50">
+            <h2 style="color: #2ecc71;">{{realtimeStats.totalVisitorsToday}}명</h2>
+            <p>오늘 방문객</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 매장 평면도 -->
+    <div class="card">
+      <div class="item item-divider">
+        🗺️ 매장 평면도 (실시간)
+      </div>
+      <div class="item item-text-wrap">
+        <div class="grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+          <div ng-repeat="row in realtimeStats.floorPlan track by $index" 
+               ng-init="rowIndex = $index">
+            <div ng-repeat="cell in row track by $index"
+                 class="text-center"
+                 style="padding: 10px 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;"
+                 ng-class="{
+                   'bg-positive': cell === 'entrance',
+                   'bg-calm': cell === 'checkout',
+                   'bg-dark': cell === 'exit' || cell === 'storage',
+                   'bg-light': !cell.startsWith('A') && !cell.startsWith('B') && !cell.startsWith('C') && !cell.startsWith('D') && !cell.startsWith('E')
+                 }">
+              {{cell}}
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 15px;">
+          <span class="badge badge-positive">입구</span>
+          <span class="badge badge-calm">결제대</span>
+          <span class="badge badge-dark">출구/창고</span>
+          <span class="badge badge-light">선반</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 활성 세션 목록 -->
+    <div class="card">
+      <div class="item item-divider">
+        👥 현재 쇼핑중인 고객 ({{realtimeStats.activeSessions.length}}명)
+      </div>
+      <div class="item item-text-wrap" ng-repeat="session in realtimeStats.activeSessions">
+        <div class="row">
+          <div class="col col-40">
+            <strong>{{session.sessionId}}</strong>
+          </div>
+          <div class="col col-30">
+            입장: {{session.entryTime}}
+          </div>
+          <div class="col col-30 text-right">
+            <span class="badge badge-balanced">{{session.zone}}존</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- burn.dev AI 추적 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🤖 AI 고객 추적 시스템
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-eye">
+            burn.dev 3D 포즈 추정 모델로 고객 행동 추적
+          </li>
+          <li class="item icon ion-android-remove-circle">
+            얼굴 영역 자동 제외 (프라이버시 보호)
+          </li>
+          <li class="item icon ion-key">
+            익명 세션 ID 로만 추적 (재방문 연결 불가)
+          </li>
+          <li class="item icon ion-wand">
+            고밀도 카메라 배열 + 압력 센서 선반 연동
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <button class="button button-block button-positive" ng-click="updateRealtimeStats()">
+      🔄 실시간 데이터 갱신
+    </button>
+    
+  </ion-content>
+</ion-view>

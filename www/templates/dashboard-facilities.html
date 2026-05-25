@@ -1,0 +1,112 @@
+<!--
+  점주 대시보드: 설비 관리 페이지
+  카메라, 센서, 결제기기 등 장비 상태 모니터링
+-->
+<ion-view view-title="설비 관리">
+  <ion-content class="padding">
+    
+    <!-- 설비 상태 요약 -->
+    <div class="card">
+      <div class="item item-divider">
+        🔧 설비 상태 요약
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-33">
+            <h2 style="color: #00dc64;">{{facilities.filter(f => f.status === 'online').length}}</h2>
+            <p>정상</p>
+          </div>
+          <div class="col col-33">
+            <h2 style="color: #ff3c3c;">{{facilities.filter(f => f.status === 'offline').length}}</h2>
+            <p>오프라인</p>
+          </div>
+          <div class="col col-33">
+            <h2 style="color: #ffc832;">{{facilities.filter(f => f.status === 'warning').length}}</h2>
+            <p>주의</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 설비 목록 -->
+    <div class="list card" ng-repeat="facility in facilities">
+      <div class="item item-icon-left"
+           style="border-left: 5px solid;"
+           ng-style="{ 'border-left-color': getStatusColor(facility.status) }">
+        <i class="icon" 
+           ng-class="{
+             'ion-eye': facility.type === 'camera',
+             'ion-wand': facility.type === 'pressure_sensor',
+             'ion-card': facility.type === 'payment_terminal'
+           }"></i>
+        <h2>{{facility.name}}</h2>
+        <p>ID: {{facility.id}}</p>
+        <p>위치: {{facility.location}}</p>
+        <p>
+          <span class="badge badge-positive" ng-if="facility.status === 'online'">온라인</span>
+          <span class="badge badge-assertive" ng-if="facility.status === 'offline'">오프라인</span>
+          <span class="badge badge-warning" ng-if="facility.status === 'warning'">주의</span>
+        </p>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50">
+            <small>최종점검: {{facility.lastCheck | date:'yyyy-MM-dd HH:mm'}}</small>
+            <br><small>펌웨어: {{facility.firmware}}</small>
+            <div ng-if="facility.batteryLevel">
+              <small>배터리: {{facility.batteryLevel}}%</small>
+              <div style="width: 50px; height: 10px; background: #eee; border-radius: 5px; display: inline-block; margin-left: 5px;">
+                <div ng-style="{ width: facility.batteryLevel + '%', background: facility.batteryLevel > 30 ? '#00dc64' : '#ff3c3c', height: '100%', border-radius: '5px' }"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-50 text-right">
+            <button class="button button-small button-calm" 
+                    ng-click="rebootFacility(facility.id)">
+              🔄 재부팅
+            </button>
+            <button class="button button-small button-balanced" 
+                    ng-click="updateFirmware(facility.id)">
+              ⬆️ 펌웨어업데이트
+            </button>
+          </div>
+        </div>
+        
+        <div ng-if="facility.error" class="row" style="margin-top: 10px;">
+          <div class="col text-right" style="color: #e74c3c;">
+            ⚠️ 에러: {{facility.error}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- burn.dev AI 연동 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🤖 burn.dev AI 시스템 연동
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-ios-camera">
+            고밀도 카메라 배열 (입구, 선반, 냉장고, 출구)
+          </li>
+          <li class="item icon ion-bowtie">
+            압력 센서 선반 (상품 집기/반납 감지)
+          </li>
+          <li class="item icon ion-wand">
+            3D 포즈 추정 모델 (고객 행동 추적)
+          </li>
+          <li class="item icon ion-flash">
+            객체 감지 모델 (실시간 상품 인식)
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <button class="button button-block button-positive" ng-click="loadFacilities()">
+      🔄 설비 상태 갱신
+    </button>
+    
+  </ion-content>
+</ion-view>
