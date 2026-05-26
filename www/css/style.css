@@ -1,1 +1,334 @@
-/* Empty. Add your own CSS if you like */
+/* 
+ * 무인 스마트 편의점 AI 플랫폼 - 커스텀 스타일
+ * burn.dev 연동 프라이버시 보호 시스템
+ */
+
+/* RGB 재고 상태 색상 클래스 */
+.stock-sufficient {
+  background-color: rgb(0,220,100) !important;
+  color: #fff;
+}
+
+.stock-needs-restock {
+  background-color: rgb(255,200,50) !important;
+  color: #333;
+}
+
+.stock-out-of-stock {
+  background-color: rgb(255,60,60) !important;
+  color: #fff;
+}
+
+.stock-near-expiry {
+  background-color: rgb(160,80,255) !important;
+  color: #fff;
+}
+
+/* 알림 유형별 스타일 */
+.item-critical {
+  border-left: 4px solid #ff3c3c !important;
+  background-color: #fff5f5;
+}
+
+.item-warning {
+  border-left: 4px solid #ffc832 !important;
+  background-color: #fffdf5;
+}
+
+.item-info {
+  border-left: 4px solid #387ef5 !important;
+  background-color: #f5f9ff;
+}
+
+/* 평면도 그리드 배경색 */
+.bg-positive {
+  background-color: #33cd5f !important;
+  color: #fff;
+}
+
+.bg-calm {
+  background-color: #11c1f3 !important;
+  color: #fff;
+}
+
+.bg-dark {
+  background-color: #444 !important;
+  color: #fff;
+}
+
+.bg-light {
+  background-color: #ddd !important;
+  color: #333;
+}
+
+/* 티어 배지 색상 */
+.tier-bronze {
+  background-color: #cd7f32 !important;
+  color: #fff;
+}
+
+.tier-silver {
+  background-color: #c0c0c0 !important;
+  color: #333;
+}
+
+.tier-gold {
+  background-color: #ffd700 !important;
+  color: #333;
+}
+
+.tier-platinum {
+  background-color: #e5e4e2 !important;
+  color: #333;
+}
+
+/* 반응형 사이드바 스타일 */
+ion-side-menu {
+  background-color: #f8f8f8;
+}
+
+ion-side-menu .item {
+  border-bottom: 1px solid #eee;
+}
+
+ion-side-menu .item-divider {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+/* 카드 스타일 개선 */
+.card {
+  margin: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card .item-divider {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  border-bottom: 2px solid #eee;
+}
+
+/* 통계 차트 스타일 */
+.chart-bar {
+  transition: height 0.3s ease;
+  border-radius: 4px 4px 0 0;
+}
+
+.chart-bar:hover {
+  opacity: 0.8;
+}
+
+/* 원형 진행률 표시기 */
+.progress-circle {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.progress-circle svg {
+  transform: rotate(-90deg);
+}
+
+.progress-circle text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* 다국어 선택 라디오 버튼 */
+.item-radio input:checked ~ .item-content h2 {
+  color: #387ef5;
+  font-weight: bold;
+}
+
+.item-radio .radio-icon {
+  color: #387ef5;
+}
+
+/* 로딩 스피너 */
+.spinner.spinner-balanced {
+  stroke: #387ef5;
+  fill: #387ef5;
+}
+
+/* QR 코드 컨테이너 */
+.qr-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 배지 스타일 유틸리티 */
+.badge-sufficient {
+  background-color: rgb(0,220,100);
+  color: #fff;
+}
+
+.badge-needs-restock {
+  background-color: rgb(255,200,50);
+  color: #333;
+}
+
+.badge-out-of-stock {
+  background-color: rgb(255,60,60);
+  color: #fff;
+}
+
+.badge-near-expiry {
+  background-color: rgb(160,80,255);
+  color: #fff;
+}
+
+/* 포인트 텍스트 스타일 */
+.points-text {
+  font-size: 48px;
+  color: #f39c12;
+  font-weight: bold;
+}
+
+/* 시간대별 방문객 차트 */
+.hourly-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 150px;
+  padding: 10px;
+}
+
+.hourly-bar {
+  flex: 1;
+  margin: 0 2px;
+  background: #2ecc71;
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.hourly-bar:hover {
+  opacity: 1;
+  transform: scaleY(1.05);
+}
+
+/* 설비 상태 인디케이터 */
+.facility-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.facility-online {
+  background-color: #00dc64;
+}
+
+.facility-offline {
+  background-color: #ff3c3c;
+}
+
+.facility-warning {
+  background-color: #ffc832;
+}
+
+/* 배터리 레벨 표시기 */
+.battery-indicator {
+  width: 50px;
+  height: 10px;
+  background: #eee;
+  border-radius: 5px;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.battery-level {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.battery-high {
+  background-color: #00dc64;
+}
+
+.battery-low {
+  background-color: #ff3c3c;
+}
+
+/* 한국 편의점 특화 아이콘 스타일 */
+.kr-convenience-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+/* 프라이버시 보호 안내 박스 */
+.privacy-notice {
+  background-color: #f0f8ff;
+  border: 1px solid #387ef5;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.privacy-notice h4 {
+  color: #387ef5;
+  margin-bottom: 10px;
+}
+
+.privacy-notice ul {
+  list-style: none;
+  padding: 0;
+}
+
+.privacy-notice li {
+  padding: 5px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.privacy-notice li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #387ef5;
+  font-weight: bold;
+}
+
+/* 반응형 그리드 */
+@media (max-width: 480px) {
+  .col-25 {
+    width: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .col-33 {
+    width: 50%;
+    margin-bottom: 10px;
+  }
+}
+
+/* 다크 모드 지원 (선택사항) */
+/*
+.dark-mode {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.dark-mode .card {
+  background-color: #2a2a2a;
+  border-color: #333;
+}
+
+.dark-mode .item {
+  background-color: #2a2a2a;
+  border-color: #333;
+  color: #fff;
+}
+*/

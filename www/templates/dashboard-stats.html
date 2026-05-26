@@ -1,0 +1,123 @@
+<!--
+  점주 대시보드: 통계 분석 페이지
+  매출 트렌드 / 인기 상품 분석
+-->
+<ion-view view-title="통계 분석">
+  <ion-content class="padding">
+    
+    <!-- 일별 매출 트렌드 -->
+    <div class="card">
+      <div class="item item-divider">
+        📈 일별 매출 트렌드 (지난 7 일)
+      </div>
+      <div class="item item-text-wrap">
+        <div style="height: 200px; display: flex; align-items: flex-end; justify-content: space-around; padding: 10px;">
+          <div ng-repeat="day in stats.dailyRevenue" 
+               style="display: flex; flex-direction: column; align-items: center;"
+               title="{{day.date}}: {{day.amount | currency:'₩'}}">
+            <div style="width: 30px; background: #387ef5; border-radius: 4px 4px 0 0;"
+                 ng-style="{ height: (day.amount / 20000) + 'px' }"></div>
+            <span style="font-size: 10px; margin-top: 5px;">{{day.date | date:'MM/dd'}}</span>
+          </div>
+        </div>
+        <div class="text-center" style="margin-top: 15px; padding: 10px; background: #f8f8f8; border-radius: 8px;">
+          <h3>총 매출: {{getTotalRevenue() | currency:'₩'}}</h3>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 인기 상품 TOP 5 -->
+    <div class="card">
+      <div class="item item-divider">
+        🏆 인기 상품 TOP 5
+      </div>
+      <div class="item item-text-wrap" ng-repeat="product in stats.topProducts">
+        <div class="row">
+          <div class="col col-10 text-center">
+            <span class="badge badge-balanced" 
+                  ng-class="{
+                    'badge-positive': product.rank === 1,
+                    'badge-calm': product.rank === 2,
+                    'badge-light': product.rank >= 3
+                  }"
+                  style="width: 30px; height: 30px; line-height: 30px;">
+              {{product.rank}}
+            </span>
+          </div>
+          <div class="col col-50">
+            <strong>{{product.name}}</strong>
+            <br><small>판매량: {{product.salesCount}}개</small>
+          </div>
+          <div class="col col-40 text-right">
+            <h4>{{product.revenue | currency:'₩'}}</h4>
+          </div>
+        </div>
+        <hr ng-if="!$last" style="border: none; border-top: 1px solid #eee;">
+      </div>
+    </div>
+    
+    <!-- 시간대별 방문객 수 -->
+    <div class="card">
+      <div class="item item-divider">
+        ⏰ 시간대별 방문객 수
+      </div>
+      <div class="item item-text-wrap">
+        <div style="height: 150px; display: flex; align-items: flex-end; justify-content: space-between; padding: 10px;">
+          <div ng-repeat="hour in stats.hourlyTraffic" 
+               style="display: flex; flex-direction: column; align-items: center; width: 8%;"
+               title="{{hour.hour}}: {{hour.count}}명">
+            <div style="width: 100%; background: #2ecc71; border-radius: 4px 4px 0 0; opacity: 0.8;"
+                 ng-style="{ height: (hour.count / 70 * 100) + '%' }"></div>
+            <span style="font-size: 9px; margin-top: 3px;">{{hour.hour | date:'HH:mm'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 고객 재방문율 -->
+    <div class="card">
+      <div class="item item-divider">
+        🔄 고객 재방문율
+      </div>
+      <div class="item item-text-wrap text-center" style="padding: 30px;">
+        <div style="position: relative; width: 150px; height: 150px; margin: 0 auto;">
+          <svg viewBox="0 0 36 36" style="transform: rotate(-90deg);">
+            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none" stroke="#eee" stroke-width="3"/>
+            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none" stroke="#387ef5" stroke-width="3"
+                  stroke-dasharray="{{stats.customerRetention}}, 100"/>
+          </svg>
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h2 style="margin: 0;">{{stats.customerRetention}}%</h2>
+          </div>
+        </div>
+        <p style="margin-top: 20px;">재방문율은 고객 충성도를 나타냅니다</p>
+      </div>
+    </div>
+    
+    <!-- 한국 편의점 특화 통계 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🇰🇷 한국 편의점 특화 인사이트
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-ios-cart">
+            삼각김밥/도시락 등 HMR 상품 매출 비중 분석
+          </li>
+          <li class="item icon ion-clock">
+            점심/저녁 피크타임 대응 인력 배치 추천
+          </li>
+          <li class="item icon ion-trending-up">
+            주말/평일 구매 패턴 비교
+          </li>
+          <li class="item icon ion-android-options">
+            택배/공공요금 등 부가서비스 이용 현황
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>

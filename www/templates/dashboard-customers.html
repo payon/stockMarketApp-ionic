@@ -1,0 +1,125 @@
+<!--
+  점주 대시보드: 고객 관리 페이지
+  익명화된 고객 데이터만 표시 (프라이버시 보호)
+-->
+<ion-view view-title="고객 관리">
+  <ion-content class="padding">
+    
+    <!-- 검색 -->
+    <div class="card">
+      <div class="item item-input-wrapper">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="익명 ID 또는 선호 카테고리로 검색" ng-model="searchQuery">
+      </div>
+    </div>
+    
+    <!-- 고객 목록 -->
+    <div class="list card" ng-repeat="customer in filteredCustomers()">
+      <div class="item item-icon-left">
+        <i class="icon ion-person"></i>
+        <h2>{{customer.anonymousId}}</h2>
+        <p>
+          <span class="badge" 
+                ng-style="{ 'background-color': getTierColor(customer.tier) }"
+                style="color: #fff;">
+            {{customer.tier}}
+          </span>
+        </p>
+      </div>
+      
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50">
+            <strong>방문 횟수:</strong> {{customer.visitCount}}회
+          </div>
+          <div class="col col-50 text-right">
+            <strong>총 지출:</strong> {{customer.totalSpent | currency:'₩'}}
+          </div>
+        </div>
+        
+        <div class="row" style="margin-top: 10px;">
+          <div class="col col-50">
+            <small>첫 방문: {{customer.firstVisit}}</small>
+          </div>
+          <div class="col col-50 text-right">
+            <small>마지막 방문: {{customer.lastVisit}}</small>
+          </div>
+        </div>
+        
+        <div class="row" style="margin-top: 10px; padding: 10px; background: #f8f8f8; border-radius: 8px;">
+          <div class="col">
+            <strong>선호 카테고리:</strong> 
+            <span ng-if="customer.favoriteCategory === 'triangular_rice_ball'">삼각김밥</span>
+            <span ng-if="customer.favoriteCategory === 'lunch_box'">도시락</span>
+            <span ng-if="customer.favoriteCategory === 'beverage'">음료</span>
+            <span ng-if="customer.favoriteCategory === 'dairy'">유제품</span>
+            <span ng-if="customer.favoriteCategory === 'snack'">스낵</span>
+            <span ng-if="customer.favoriteCategory === 'etc'">기타</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 빈 결과 -->
+    <div class="card" ng-if="filteredCustomers().length === 0">
+      <div class="item item-text-wrap text-center">
+        <h3>🔍 검색 결과가 없습니다</h3>
+        <p>다른 검색어를 시도해보세요</p>
+      </div>
+    </div>
+    
+    <!-- 프라이버시 보호 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        🔒 프라이버시 보호 정책
+      </div>
+      <div class="item item-text-wrap">
+        <ul class="item-icon-left">
+          <li class="item icon ion-lock-combination">
+            얼굴 인식 없는 골격 추적만 사용
+          </li>
+          <li class="item icon ion-android-remove-circle">
+            얼굴 영역 자동 제외 (키포인트 0 번 제거)
+          </li>
+          <li class="item icon ion-key">
+            세션 범위 익명 ID 만 저장 (재방문 연결 불가)
+          </li>
+          <li class="item icon ion-ios-circle-outline">
+            생체 특징 정보 비저장
+          </li>
+          <li class="item icon ion-document-text">
+            개인정보보호법 및 GDPR 준수
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- 고객 티어 안내 -->
+    <div class="card">
+      <div class="item item-divider">
+        ⭐ 고객 티어 시스템
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row text-center">
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: #cd7f32; margin: 0 auto 5px; border-radius: 50%;"></div>
+            <span style="font-size: 11px;">Bronze<br>0~999P</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: #c0c0c0; margin: 0 auto 5px; border-radius: 50%;"></div>
+            <span style="font-size: 11px;">Silver<br>1,000~4,999P</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: #ffd700; margin: 0 auto 5px; border-radius: 50%;"></div>
+            <span style="font-size: 11px;">Gold<br>5,000~9,999P</span>
+          </div>
+          <div class="col col-25">
+            <div style="width: 40px; height: 40px; background: #e5e4e2; margin: 0 auto 5px; border-radius: 50%;"></div>
+            <span style="font-size: 11px;">Platinum<br>10,000P+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-view>
